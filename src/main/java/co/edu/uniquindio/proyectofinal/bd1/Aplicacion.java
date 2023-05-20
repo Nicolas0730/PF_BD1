@@ -27,7 +27,7 @@ public class Aplicacion  extends Application{
                 primaryStage.close();
                 FXMLLoader loader = new FXMLLoader();
 
-                loader.setLocation(Aplicacion.class.getResource("view/inicio.fxml"));
+                loader.setLocation(Aplicacion.class.getResource("view/consultaProcesoView.fxml"));
                 System.out.println(loader.getLocation());
 
                 AnchorPane vistaIndex = (AnchorPane) loader.load();
