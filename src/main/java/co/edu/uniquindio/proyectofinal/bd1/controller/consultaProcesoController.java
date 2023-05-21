@@ -48,6 +48,10 @@ public class consultaProcesoController implements Initializable{
     private Button nuevaConsultaBtn;
     @FXML
     private Label labelDespacho = new Label();
+    @FXML
+    private Label labelConsecutivo = new Label();
+    @FXML
+    private Label labelRadicacion = new Label();
 
     MVC modelFactory = new MVC();
 
@@ -61,8 +65,8 @@ public class consultaProcesoController implements Initializable{
         cargarEspecialidad();
         cargarAños();
         labelDespacho.setVisible(false);
-
-//        desactivarCampos();
+        labelConsecutivo.setVisible(false);
+        labelRadicacion.setVisible(false);
 
     }
 
@@ -165,16 +169,32 @@ public class consultaProcesoController implements Initializable{
 
     @FXML
     void escribirConsecutivo(ActionEvent event) {
-
+        String aux = txtFieldNumeroProceso.getText();
+        if (textFieldNumeroConsecutivo.getText().length()!=23){
+            labelConsecutivo.setVisible(true);
+        }if (textFieldNumeroConsecutivo.getText().length()==23){
+            labelConsecutivo.setVisible(false);
+        }
+        if (txtFieldNumeroProceso.getText().length()==21 && txtFieldNumeroProceso.getText().length()+textFieldNumeroConsecutivo.getText().length()==23){
+            txtFieldNumeroProceso.setText(aux + "" + textFieldNumeroConsecutivo.getText());
+            labelConsecutivo.setVisible(false);
+        } if (txtFieldNumeroProceso.getText().length()==23){
+            String content = txtFieldNumeroProceso.getText().substring(0,21);
+            if ((content.length()+textFieldNumeroConsecutivo.getText().length())==23){
+                txtFieldNumeroProceso.setText(content+""+textFieldNumeroConsecutivo.getText());
+                labelConsecutivo.setVisible(false);
+            }
+        }
     }
+
 
     /**
      * Método que escribe en el número de proceso el número de despacho.
+     * el tamaño de este es de 3
      * @param event
      */
     @FXML
     void escribirDespacho(ActionEvent event) {
-
         String aux = txtFieldNumeroProceso.getText();
         if (txtFieldDespacho.getText().length()!=12){
             labelDespacho.setVisible(true);
@@ -188,16 +208,33 @@ public class consultaProcesoController implements Initializable{
                     txtFieldNumeroProceso.setText(content+""+txtFieldDespacho.getText());
                     labelDespacho.setVisible(false);
                 }
-
+            }
         }
-    }
 
 
+    /**
+     * Método que escribe el número de radicación dentro del número de proceso
+     * el tamaño de este es de 5
+     * @param event
+     */
     @FXML
     void escribirRadicacion(ActionEvent event) {
-//        if (!txtFieldNumeroRadicacion.getText().isEmpty()){
-//            textFieldNumeroConsecutivo.setDisable(false);
-//        }
+        String aux = txtFieldNumeroProceso.getText();
+        if (txtFieldNumeroRadicacion.getText().length()!=21){
+            labelRadicacion.setVisible(true);
+        }if (txtFieldNumeroRadicacion.getText().length()==21){
+            labelRadicacion.setVisible(false);
+        }
+        if (txtFieldNumeroProceso.getText().length()==16 && txtFieldNumeroProceso.getText().length()+txtFieldNumeroRadicacion.getText().length()==21){
+            txtFieldNumeroProceso.setText(aux + "" + txtFieldNumeroRadicacion.getText());
+            labelRadicacion.setVisible(false);
+        } if (txtFieldNumeroProceso.getText().length()==21){
+            String content = txtFieldNumeroProceso.getText().substring(0,16);
+                if ((content.length()+txtFieldNumeroRadicacion.getText().length())==21){
+                    txtFieldNumeroProceso.setText(content+""+txtFieldNumeroRadicacion.getText());
+                    labelRadicacion.setVisible(false);
+                }
+        }
     }
 
 
