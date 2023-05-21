@@ -5,12 +5,18 @@ public class Ciudad {
     private int id;
     private String nombre;
     private String codigoDane;
+    private String codigo_Dep;
 //    private Departamento departamento= new Departamento();
+
+    public Ciudad(){
+
+    }
 
     public Ciudad(int id,String nombre, String codigoDane, String codigo_Dep){
         this.id=id;
         this.nombre=nombre;
         this.codigoDane=codigoDane;
+        this.codigo_Dep=codigo_Dep;
     }
 
     public String getNombre() {
@@ -27,5 +33,14 @@ public class Ciudad {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getCodigo_Dep() {
+        return codigo_Dep;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
     }
 }
