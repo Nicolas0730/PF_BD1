@@ -3,8 +3,10 @@ package co.edu.uniquindio.proyectofinal.bd1.controller;
 import co.edu.uniquindio.proyectofinal.bd1.Aplicacion;
 import co.edu.uniquindio.proyectofinal.bd1.database.CiudadDAO;
 import co.edu.uniquindio.proyectofinal.bd1.database.DepartamentoDAO;
+import co.edu.uniquindio.proyectofinal.bd1.database.EspecialidadDAO;
 import co.edu.uniquindio.proyectofinal.bd1.model.Ciudad;
 import co.edu.uniquindio.proyectofinal.bd1.model.Departamento;
+import co.edu.uniquindio.proyectofinal.bd1.model.Especialidad;
 import javafx.collections.ObservableList;
 
 import javax.swing.*;
@@ -28,7 +30,6 @@ public class MVC {
      */
     public Departamento mostrarDepartamento(int codigoDep) throws SQLException, NoSuchAlgorithmException {
         Departamento dep=departamentoDAO.recuperarDepartamento(codigoDep);
-//        System.out.println("Codigo departamento: "+dep.getId()+"\nNombre departamento: "+dep.getNombre());
         return dep;
     }
 
@@ -62,5 +63,19 @@ public class MVC {
 
     public ObservableList<String> listarCiudades() throws SQLException {
         return ciudadDAO.recuperarListaCiudades();
+    }
+
+    /**
+     * Método que llama a EspecialidadDAO a que consulte los nombres de las especialidades en la base de
+     * datos y en la tabla especialidad
+     * @return
+     * @throws SQLException
+     */
+    public ObservableList<String> listarEspecialidades() throws SQLException {
+        return EspecialidadDAO.recuperarListaEspecialidades();
+    }
+
+    public Especialidad mostrarCodigo(String newValue) throws SQLException {
+        return EspecialidadDAO.recuperarCodigoEspecialidad(newValue);
     }
 }

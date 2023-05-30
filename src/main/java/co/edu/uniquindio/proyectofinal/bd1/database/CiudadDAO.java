@@ -32,7 +32,8 @@ public class CiudadDAO {
             stmt.setString(1,codDANE);
             rs = stmt.executeQuery();
             if (rs.next()) {
-                ciudad = new Ciudad(rs.getInt(1),rs.getString(3), rs.getString(2),rs.getString(4) );
+                //int id,String nombre, String codigoDane, String codigo_Dep
+                ciudad = new Ciudad(rs.getInt(1),rs.getString(2), rs.getString(3),rs.getString(4) );
             }
         } finally {
             if (rs != null) rs.close();
@@ -59,7 +60,7 @@ public class CiudadDAO {
             stmt.setString(1,nombreCiudad);
             rs = stmt.executeQuery();
             if (rs.next()) {
-                ciudad = new Ciudad(rs.getInt(1),rs.getString(3), rs.getString(2),rs.getString(4) );
+                ciudad = new Ciudad(rs.getInt(1),rs.getString(2), rs.getString(3),rs.getString(4) );
             }
         } finally {
             if (rs != null) rs.close();

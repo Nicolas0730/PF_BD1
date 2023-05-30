@@ -12,12 +12,11 @@ public class Database {
     public Database(){
 
     }
-
     //Si fuera a pedir un certificado SSL seria:
 //    String url = "jdbc:mysql://localhost:3306/mydatabase?useSSL=true&requireSSL=true&verifyServerCertificate=true&trustCertificateKeyStoreUrl=file:///path/to/truststore&trustCertificateKeyStorePassword=your_password";
 //    Connection con = DriverManager.getConnection(url, username, password);
 
-    private static final String URL = "jdbc:mysql://localhost:3306/bd1?serverTimezone=America/Bogota&useSSL=false";
+    private static final String URL = "jdbc:mysql://localhost:3306/bases?serverTimezone=America/Bogota&useSSL=false";
     private static final String USER = "root";
     private static final String PASSWORD = "nicolas";
 

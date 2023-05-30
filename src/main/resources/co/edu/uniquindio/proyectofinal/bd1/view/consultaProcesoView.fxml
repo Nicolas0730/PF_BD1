@@ -24,7 +24,7 @@
                </children>
             </Group>
             <Text layoutX="94.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Entidad/Especialidad:" />
-            <ComboBox fx:id="comboBoxEspecialidad" layoutX="226.0" layoutY="77.0" prefHeight="25.0" prefWidth="376.0" promptText="Seleccione la corporación/especialidad ...." />
+            <ComboBox fx:id="comboBoxEspecialidad" layoutX="226.0" layoutY="77.0" onAction="#cargarCodigoEspecialidad" prefHeight="25.0" prefWidth="376.0" promptText="Seleccione la corporación/especialidad ...." />
             <Text layoutX="11.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Seleccione dónde está localizado el proceso">
                <font>
                   <Font name="System Bold" size="12.0" />
@@ -76,12 +76,7 @@
             </Group>
             <Text layoutX="223.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*Número consecutivo:" />
             <TextField fx:id="txtFieldNumeroProceso" layoutX="183.0" layoutY="221.0" prefHeight="25.0" prefWidth="284.0" />
-            <Group layoutX="242.0" layoutY="259.0">
-               <children>
-                  <Button fx:id="consultarBtn" mnemonicParsing="false" onAction="#realizarConsulta" text="Consular" />
-                  <Button fx:id="nuevaConsultaBtn" layoutX="69.0" mnemonicParsing="false" onMouseClicked="#limpiarCampos" text="Nueva consulta" />
-               </children>
-            </Group>
+            <Group layoutX="242.0" layoutY="259.0" />
             <Line endX="442.0" layoutX="160.0" layoutY="44.0" startX="-139.0" style="-fx-stroke: blue;" />
             <Label fx:id="labelDespacho" layoutX="446.0" layoutY="71.0" prefHeight="17.0" prefWidth="136.0" text="DEBE CONTENER 3 CARACTERES" textFill="RED">
                <font>
@@ -98,6 +93,7 @@
                   <Font size="9.0" />
                </font>
             </Label>
+            <Button fx:id="consultarBtn" layoutX="277.0" layoutY="266.0" mnemonicParsing="false" onAction="#realizarConsulta" prefHeight="25.0" prefWidth="112.0" text="Consular" />
          </children>
       </AnchorPane>
    </children>

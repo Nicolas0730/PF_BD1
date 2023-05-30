@@ -17,7 +17,7 @@ public class Aplicacion  extends Application{
     public void start(Stage primaryStage) throws IOException {
 
         this.primaryStage = primaryStage;
-        this.primaryStage.setTitle("Constructora CAMU");
+        this.primaryStage.setTitle("Consulta de procesos");
         mostrarVentanaInicio();
     }
 

@@ -1,5 +1,7 @@
 package co.edu.uniquindio.proyectofinal.bd1.controller;
+import co.edu.uniquindio.proyectofinal.bd1.model.Ciudad;
 import co.edu.uniquindio.proyectofinal.bd1.model.Departamento;
+import co.edu.uniquindio.proyectofinal.bd1.model.Especialidad;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -45,8 +47,6 @@ public class consultaProcesoController implements Initializable{
     @FXML
     private Button consultarBtn;
     @FXML
-    private Button nuevaConsultaBtn;
-    @FXML
     private Label labelDespacho = new Label();
     @FXML
     private Label labelConsecutivo = new Label();
@@ -59,10 +59,11 @@ public class consultaProcesoController implements Initializable{
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             cargarCiudades();
+            cargarEspecialidad();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        cargarEspecialidad();
+
         cargarAños();
         labelDespacho.setVisible(false);
         labelConsecutivo.setVisible(false);
@@ -77,20 +78,6 @@ public class consultaProcesoController implements Initializable{
         textFieldNumeroConsecutivo.setDisable(true);
     }
 
-    /**
-     * Método que limpia todos los datos para volver a empezar a construir el numero de proceso
-     * @param event
-     */
-    @FXML
-    void limpiarCampos(MouseEvent event) {
-        txtFieldDespacho.clear();
-        comboBoxAño.getSelectionModel().select(null);
-        comboBoxCiudad.getSelectionModel().select(null);
-        comboBoxEspecialidad.getSelectionModel().select(null);
-        txtFieldNumeroRadicacion.clear();
-        textFieldNumeroConsecutivo.clear();
-        txtFieldNumeroProceso.clear();
-    }
     private void cargarAños() {
         ObservableList<String> anios = FXCollections.observableArrayList();
         for (int anio = 1950; anio <= 2023; anio++) {
@@ -108,8 +95,62 @@ public class consultaProcesoController implements Initializable{
             comboBoxCiudad.setItems(ciudades);
     }
 
-    private void cargarEspecialidad(){
-        comboBoxEspecialidad.getItems().addAll("TRIBUNAL ADMINISTRATIVO DEL QUINDÍO","TRIBUNAL SUPERIOR SALA PENAL ARMENIA");
+    /**
+     * Metodo que carga en el combobox las especialidades
+     * @throws SQLException
+     */
+    private void cargarEspecialidad() throws SQLException {
+        ObservableList<String> especialidades = modelFactory.listarEspecialidades();
+        comboBoxEspecialidad.setItems(especialidades);
+    }
+
+    /**
+     * Método que se encarga de poner en el textfield del numero de proceso
+     * el codigo del lugar que se haya seleccionado en el ecomboBox
+     */
+    @FXML
+    private void cargarCodigoEspecialidad(){
+        comboBoxEspecialidad.valueProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String oldValue, String newValue) {
+                try {
+                    String aux=separarTexto(newValue);
+                    Especialidad especialidad = modelFactory.mostrarCodigo(aux);
+                    String codDane=Integer.toString(especialidad.getCod_dane());
+                    String codCat=Integer.toString(especialidad.getCategoria_id()); //debe ser de 2 cifras
+
+                    if (codCat.length()==1){
+                        codCat="0"+codCat;
+                    }
+                    if (codDane.length()==1){
+                        codDane="0"+codDane;
+                    }
+
+                    if (txtFieldNumeroProceso.getText().length()==9){
+                        String a=txtFieldNumeroProceso.getText().substring(0,5);
+                        txtFieldNumeroProceso.setText(a+""+codDane+codCat);
+                    }
+                    if (txtFieldNumeroProceso.getText().length()==5){
+                    txtFieldNumeroProceso.setText(txtFieldNumeroProceso.getText()+""+codDane+codCat);
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
+
+    private String separarTexto(String newValue) {
+        String[] palabras = newValue.split(" ");
+        StringBuilder resultado = new StringBuilder();
+
+        for (String palabra : palabras) {
+            if (palabra.matches("[A-Z]+")) {
+                resultado.append(palabra).append(" ");
+            }
+        }
+
+        return resultado.toString().trim();
     }
 
     /**
@@ -120,18 +161,15 @@ public class consultaProcesoController implements Initializable{
      */
     @FXML
     void realizarConsulta(ActionEvent event) throws SQLException, NoSuchAlgorithmException {
-
-        if (!comboBoxCiudad.getValue().isEmpty()&&comboBoxCiudad.getValue()!=null){
-            modelFactory.mostrarCiudad(comboBoxCiudad.getValue());
-            txtFieldDespacho.setDisable(false);
-        }
+        JOptionPane.showMessageDialog(null,"El proceso con el código: "+txtFieldNumeroProceso.getText()+" está siendo consultado.");
     }
 
     /**
      * Método que utiliza la información de la ciudad/departamento seleccionada en el Combobox
      */
     @FXML
-    void escribirCodNumProceso() {
+    void escribirCodNumProceso() throws SQLException, NoSuchAlgorithmException {
+
         if (comboBoxCiudad.getValue()!=null){
             txtFieldDespacho.setDisable(false);
         }
@@ -139,13 +177,13 @@ public class consultaProcesoController implements Initializable{
                 @Override
                 public void changed(ObservableValue<? extends String> observableValue, String oldValue, String newValue) {
                     try {
-                        Departamento dep=modelFactory.mostrarDepartamento(Integer.parseInt(modelFactory.mostrarCiudad(newValue).getCodigo_Dep()));
+                        Departamento dep=modelFactory.mostrarDepartamento(Integer.parseInt(modelFactory.mostrarCiudad(newValue).getCodigo()));
                         String codDep = Integer.toString(dep.getId());
                                     if(codDep.length()==1){
                             codDep="0"+codDep;
                         }
                         txtFieldNumeroProceso.setText(codDep);
-                        txtFieldNumeroProceso.setText(txtFieldNumeroProceso.getText()+""+modelFactory.mostrarCiudad(newValue).getCodigo());
+                        txtFieldNumeroProceso.setText(txtFieldNumeroProceso.getText()+""+modelFactory.mostrarCiudad(newValue).getCodigo_Dep());
                         txtFieldNumeroProceso.setAlignment(Pos.CENTER_RIGHT);
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
@@ -156,6 +194,10 @@ public class consultaProcesoController implements Initializable{
             });
     }
 
+    /**
+     * Metodo que escribe el año seleccionado en el textfieldNumeroProceso
+     * @param event
+     */
     @FXML
     void escribirAño(ActionEvent event) {
         String aux = txtFieldNumeroProceso.getText();
@@ -167,6 +209,10 @@ public class consultaProcesoController implements Initializable{
         }
         }
 
+    /**
+     * Metodo que escribe el consecutivo puesto por el usuario en el campo de consecutivo
+     * @param event
+     */
     @FXML
     void escribirConsecutivo(ActionEvent event) {
         String aux = txtFieldNumeroProceso.getText();
